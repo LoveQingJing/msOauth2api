@@ -200,6 +200,15 @@ module.exports = async (req, res) => {
                     });
                 });
 
+                // 新增的拦截判断：如果邮箱为空，优雅结束并返回提示
+                if (!results || results.length === 0) {
+                    imap.end();
+                    return res.status(200).json({ 
+                        status: "empty", 
+                        message: "当前邮箱文件夹中没有任何邮件" 
+                    });
+                }
+
                 const f = imap.fetch(results, { bodies: "" });
 
                 f.on("message", (msg, seqno) => {
