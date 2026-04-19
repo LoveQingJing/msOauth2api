@@ -260,7 +260,11 @@ module.exports = async (req, res) => {
         imap.connect();
 
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: error.message });
+        console.error('API 执行失败:', error);
+        // 将状态码改为 400，并清晰地返回具体的错误信息，方便排查
+        res.status(400).json({ 
+            error: 'Failed to process request', 
+            details: error.message 
+        });
     }
 };
